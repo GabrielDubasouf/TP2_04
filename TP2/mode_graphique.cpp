@@ -61,7 +61,7 @@ void  effacer_ecran(void)
 *******************************************************************************/
 void  pause_ecran(void)
 { //l'utilisateur doit appuyer une touche pour terminer la pause-écran
-  getch_graph();
+	getch_graph();
 }
 
 /*******************************************************************************
