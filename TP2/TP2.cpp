@@ -2,24 +2,65 @@
 //
 
 #include <iostream>
+#include "grille.h"
+#include "mode_graphique.h"
+#include "neurones.h"
+#include "SOURISLIB.h"
+#include "winBGIm.h"
+
+
+void main_grille(int pos_x, int pos_y, t_grille saisie_ecran);
 
 int main()
 {
-    std::cout << "Hello World!\n";
+	int pos_x;
+	int pos_y;
+	t_grille saisie_ecran;
 
+	initialiser_graphique();
 
+	afficher_texte("Ecrire un chiffre, peser [ESPACE] pour confirmer ou [ESC] pour annuler.");
 
+	main_grille(pos_x, pos_y, saisie_ecran);
 
+	fermer_graphique();
+
+	//DEMANDER PROF --> afficer valeurs de la grille en format matrice, for?
 
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
+//Premier test de main de la grille
+void main_grille(int pos_x, int pos_y, t_grille saisie_ecran) {
 
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
+	int valide = FALSE;
+	int touche;
+	int conforme;
+
+	do {
+		dessiner_rect(0, 0, 10 * NB_VARX, 10 * NB_VARY);			//DEMANDER PROF POSI INIT.
+
+		touche = dessiner_forme();
+
+		effacer_texte();
+
+		if (touche == CODE_ESC) {
+			afficher_texte("Appuyer une touche pour recommencer.");	//DEMANDER PROF FONVTIONNEMENT
+			pause_ecran();
+
+			valide = FALSE;
+		}
+		else if (touche == CODE_ESPACE) {
+			recuperer_dessin(pos_x, pos_y, saisie_ecran);			//DEMANDER PROF GRILLE
+			conforme = valider_grille(saisie_ecran,NB_VARY * 10,NB_VARX * 10 );
+			if (conforme == ERREUR_TAILLE) {
+				afficher_texte("Image trop petite.");
+			}
+			else if (conforme == ERREUR_POSI) {
+				afficher_texte("Image pas centre");
+			}
+			else if (conforme == 0) {
+				valide = TRUE;
+			}
+		}
+	} while (valide == FALSE);
+}
